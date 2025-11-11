@@ -17,26 +17,26 @@ datasource db {
 // MODELO DE USUÁRIO
 // ==========================================
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String
-  password      String
-  language      String    @default("pt")
-  tier          String    @default("starter")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  language  String   @default("pt")
+  tier      String   @default("starter")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ==========================================
 // MODELO DE TEMPLATE
 // ==========================================
 model Template {
-  id            String    @id @default(cuid())
-  namePt        String
-  nameEn        String
-  promptPt      String    @db.Text
-  promptEn      String    @db.Text
-  platform      String
-  duration      String
-  createdAt     DateTime  @default(now())
+  id        String   @id @default(cuid())
+  namePt    String
+  nameEn    String
+  promptPt  String   @db.Text
+  promptEn  String   @db.Text
+  platform  String
+  duration  String
+  createdAt DateTime @default(now())
 }
