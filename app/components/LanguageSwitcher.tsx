@@ -1,23 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useLanguage } from '@/app/hooks/useLanguage';
 
 export default function LanguageSwitcher() {
-  const [language, setLanguage] = useState<'pt' | 'en'>('pt');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('language') as 'pt' | 'en';
-    setLanguage(saved || 'pt');
-    setMounted(true);
-  }, []);
-
-  const handleLanguageChange = (lang: 'pt' | 'en') => {
-    setLanguage(lang);
-    localStorage.setItem('language', lang);
-  };
-
-  if (!mounted) return null;
+  const { language, setLanguage } = useLanguage();
 
   return (
     <div style={{
@@ -34,7 +20,7 @@ export default function LanguageSwitcher() {
       zIndex: 1000,
     }}>
       <button
-        onClick={() => handleLanguageChange('pt')}
+        onClick={() => setLanguage('pt')}
         aria-label="Português"
         style={{
           padding: '0.5rem 0.8rem',
@@ -60,7 +46,7 @@ export default function LanguageSwitcher() {
         🇧🇷 PT
       </button>
       <button
-        onClick={() => handleLanguageChange('en')}
+        onClick={() => setLanguage('en')}
         aria-label="English"
         style={{
           padding: '0.5rem 0.8rem',

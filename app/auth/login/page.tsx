@@ -1,9 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useLanguage } from '@/app/hooks/useLanguage';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import Scene3D from '@/app/components/3d/Scene3D';
+import GlassCard from '@/app/components/ui/GlassCard';
+import { ArrowRight, Mail, Lock, Loader2 } from 'lucide-react';
+import { useLanguage } from '@/app/hooks/useLanguage';
 
 export default function LoginPage() {
   const { t } = useLanguage();
@@ -38,66 +42,90 @@ export default function LoginPage() {
   };
 
   return (
-    <main style={{
-      minHeight: '100vh',
-      background: '#0a0a0a',
-      color: '#fff',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '2rem'
-    }}>
-      <div style={{
-        maxWidth: '400px',
-        width: '100%',
-        background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(212, 175, 55, 0.02) 100%)',
-        border: '2px solid rgba(212, 175, 55, 0.2)',
-        padding: '2rem',
-        borderRadius: '15px',
-        backdropFilter: 'blur(10px)'
-      }}>
-        <h1 style={{
-          fontSize: '2rem',
-          color: '#d4af37',
-          marginBottom: '1.5rem',
-          textAlign: 'center',
-          textShadow: '0 0 10px rgba(212, 175, 55, 0.3)'
-        }}>
-          {t('signIn')}
-        </h1>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      <Scene3D className="opacity-50">
+        {/* Reuse 3D scene */}
+      </Scene3D>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#d4af37', fontWeight: 'bold' }}>
-              {t('email')}
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                background: 'rgba(0, 0, 0, 0.5)',
-                border: '1px solid rgba(212, 175, 55, 0.3)',
-                borderRadius: '5px',
-                color: '#fff',
-                fontSize: '1rem'
-              }}
-            />
+      <div className="relative z-10 w-full max-w-md px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 mb-2">
+              Bem-vindo de Volta
+            </h1>
+            <p className="text-gray-400">Acesse seu painel de controle.</p>
           </div>
 
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#d4af37', fontWeight: 'bold' }}>
-              {t('password')}
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                background: 'rgba(0, 0, 0,
+          <GlassCard className="backdrop-blur-2xl bg-black/40 border-white/10">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300 ml-1">{t('email')}</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all"
+                    placeholder="seu@email.com"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300 ml-1">{t('password')}</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/20 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? <Loader2 className="animate-spin" size={20} /> : (
+                  <>
+                    {t('signIn')} <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 p-3 rounded-lg text-sm text-center bg-red-500/10 text-red-400 border border-red-500/20"
+              >
+                {error}
+              </motion.div>
+            )}
+
+            <div className="mt-6 text-center">
+              <p className="text-gray-400 text-sm">
+                {t('dontHaveAccount')}{' '}
+                <Link href="/auth/register" className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
+                  {t('register')}
+                </Link>
+              </p>
+            </div>
+          </GlassCard>
+        </motion.div>
+      </div>
+    </div>
+  );
+}

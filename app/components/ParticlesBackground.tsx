@@ -49,6 +49,7 @@ export default function ParticlesBackground() {
     let rotation = 0;
 
     function animate() {
+      if (!ctx || !canvas) return;
       // Fundo semi-transparente para efeito de trilha
       ctx.fillStyle = 'rgba(10, 10, 10, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
